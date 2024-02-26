@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { CrudFilter, useList } from "@refinedev/core";
 import dayjs from "dayjs";
 import Stats from "../../components/dashboard/Stats";
@@ -7,21 +7,32 @@ import { ResponsiveBarChart } from "../../components/dashboard/ResponsiveBarChar
 import { TabView } from "../../components/dashboard/TabView";
 import { RecentSales } from "../../components/dashboard/RecentSales";
 import { IChartDatum, TTab } from "../../interfaces";
-
-const filters: CrudFilter[] = [
-    {
-        field: "start",
-        operator: "eq",
-        value: dayjs()?.subtract(7, "days")?.startOf("day"),
-    },
-    {
-        field: "end",
-        operator: "eq",
-        value: dayjs().startOf("day"),
-    },
-];
+import DateRangePicker from "../../components/dashboard/DateRangePicker";
 
 export const Dashboard: React.FC = () => {
+    const [dateRange, setDateRange] = useState<[Date, Date]>([
+        dayjs().subtract(7, "days").startOf("day").toDate(),
+        dayjs().startOf("day").toDate()
+    ]);
+
+    const handleDateRangeChange = (newDates: [Date, Date]) => {
+        setDateRange(newDates);
+    };
+
+    const filters: CrudFilter[] = [
+        {
+            field: "start",
+            operator: "eq",
+            value: dayjs(dateRange[0])?.startOf("day"),
+        },
+        {
+            field: "end",
+            operator: "eq",
+            value: dayjs(dateRange[1])?.startOf("day"),
+        },
+    ];
+
+    // useMemo to memoize chart data fetching based on the selected date range
     const { data: dailyRevenue } = useList<IChartDatum>({
         resource: "dailyRevenue",
         filters,
@@ -54,6 +65,7 @@ export const Dashboard: React.FC = () => {
     const memoizedOrdersData = useMemoizedChartData(dailyOrders);
     const memoizedNewCustomersData = useMemoizedChartData(newCustomers);
 
+    // Rendering logic for the comparison charts based on the selected date range
     const tabs: TTab[] = [
         {
             id: 1,
@@ -101,6 +113,7 @@ export const Dashboard: React.FC = () => {
 
     return (
         <>
+            <DateRangePicker value={dateRange} onChange={handleDateRangeChange} />
             <Stats
                 dailyRevenue={dailyRevenue}
                 dailyOrders={dailyOrders}
