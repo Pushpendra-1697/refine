@@ -25,11 +25,6 @@ export const ResponsiveAreaChart = ({
     data,
     colors,
 }: TResponsiveAreaChartProps) => {
-    if(!data){
-        return <h1>Loading....</h1>;
-    };
-    // Calculate maxYAxisValue based on the data
-    const maxYAxisValue = Math.max(40000, Math.ceil(Math.max(...data.map((item) => item.value)) / 20000) * 20000);
     return (
         <ResponsiveContainer height={400}>
             <AreaChart
@@ -45,24 +40,22 @@ export const ResponsiveAreaChart = ({
                 <CartesianGrid strokeDasharray="0 0 0" />
                 <XAxis
                     dataKey="date"
-                    tickCount={Math.ceil(data.length / 2) ?? 0}
+                    tickCount={data?.length ?? 0}
                     tick={{
                         stroke: "light-grey",
                         strokeWidth: 0.5,
                         fontSize: "12px",
                     }}
-                    interval={0}
                 />
                 <YAxis
-                    tickCount={3}
+                    tickCount={13}
                     tick={{
                         stroke: "light-grey",
                         strokeWidth: 0.5,
                         fontSize: "12px",
                     }}
                     interval="preserveStartEnd"
-                    domain={[0, maxYAxisValue]}
-                    tickFormatter={(value) => `${value / 1000}k`}
+                    domain={[0, "dataMax + 10"]}
                 />
                 <Tooltip
                     content={<ChartTooltip kpi={kpi} colors={colors} />}
@@ -76,11 +69,11 @@ export const ResponsiveAreaChart = ({
                     type="monotone"
                     dataKey="value"
                     stroke={colors?.stroke}
-                    strokeWidth={2}
+                    strokeWidth={3}
                     fill={colors?.fill}
                     dot={{
                         stroke: colors?.stroke,
-                        strokeWidth: 2,
+                        strokeWidth: 3,
                     }}
                 />
             </AreaChart>

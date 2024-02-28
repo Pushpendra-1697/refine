@@ -11,28 +11,40 @@ import DateRangePicker from "../../components/dashboard/DateRangePicker";
 
 export const Dashboard: React.FC = () => {
     const [dateRange, setDateRange] = useState<[Date, Date]>([
-        dayjs().subtract(7, "days").startOf("day").toDate(),
-        dayjs().startOf("day").toDate()
+        dayjs().subtract(7, "months").startOf("month").toDate(),
+        dayjs().startOf("month").toDate()
     ]);
 
     const handleDateRangeChange = (newDates: [Date, Date]) => {
         setDateRange(newDates);
     };
 
+    // const filters: CrudFilter[] = [
+    //     {
+    //         field: "start",
+    //         operator: "gte",
+    //         value: dayjs(dateRange[0])?.startOf("month"),
+    //     },
+    //     {
+    //         field: "end",
+    //         operator: "lte",
+    //         value: dayjs(dateRange[1])?.endOf("month"),
+    //     },
+    // ];
+
     const filters: CrudFilter[] = [
         {
             field: "start",
             operator: "eq",
-            value: dayjs(dateRange[0])?.startOf("day"),
+            value: dayjs()?.subtract(7, "days")?.startOf("day"),
         },
         {
             field: "end",
             operator: "eq",
-            value: dayjs(dateRange[1])?.startOf("day"),
+            value: dayjs().startOf("day"),
         },
     ];
 
-    // useMemo to memoize chart data fetching based on the selected date range
     const { data: dailyRevenue } = useList<IChartDatum>({
         resource: "dailyRevenue",
         filters,
@@ -54,9 +66,8 @@ export const Dashboard: React.FC = () => {
                 date: new Intl.DateTimeFormat("en-US", {
                     month: "short",
                     year: "numeric",
-                    day: "numeric",
                 }).format(new Date(item.date)),
-                value: item?.value,
+                value: item?.value / 1000,
             }));
         }, [d]);
     };
@@ -114,11 +125,7 @@ export const Dashboard: React.FC = () => {
     return (
         <>
             <DateRangePicker value={dateRange} onChange={handleDateRangeChange} />
-            <Stats
-                dailyRevenue={dailyRevenue}
-                dailyOrders={dailyOrders}
-                newCustomers={newCustomers}
-            />
+            <Stats />
             <TabView tabs={tabs} />
             <RecentSales />
         </>
