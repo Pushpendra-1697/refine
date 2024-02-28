@@ -38,18 +38,18 @@ export const ResponsiveBarChart = ({
                 }}
             >
                 <CartesianGrid strokeDasharray="0 0" />
-                <XAxis
-                    dataKey="date"
-                    tickCount={data?.length ?? 0}
+                <YAxis
+                    domain={[0, "dataMax"]}
+                    tickCount={13}
                     tick={{
                         stroke: "light-grey",
                         strokeWidth: 0.5,
                         fontSize: "12px",
                     }}
                 />
-                <YAxis
-                    domain={[0, "dataMax"]}
-                    tickCount={13}
+                <XAxis
+                    dataKey="date"
+                    tickCount={data?.length ?? 0}
                     tick={{
                         stroke: "light-grey",
                         strokeWidth: 0.5,

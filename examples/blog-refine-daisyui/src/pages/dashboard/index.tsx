@@ -11,37 +11,24 @@ import DateRangePicker from "../../components/dashboard/DateRangePicker";
 
 export const Dashboard: React.FC = () => {
     const [dateRange, setDateRange] = useState<[Date, Date]>([
-        dayjs().subtract(7, "months").startOf("month").toDate(),
-        dayjs().startOf("month").toDate()
+        dayjs().subtract(7, "days").startOf("day").toDate(),
+        dayjs().startOf("day").toDate()
     ]);
 
     const handleDateRangeChange = (newDates: [Date, Date]) => {
         setDateRange(newDates);
     };
 
-    // const filters: CrudFilter[] = [
-    //     {
-    //         field: "start",
-    //         operator: "gte",
-    //         value: dayjs(dateRange[0])?.startOf("month"),
-    //     },
-    //     {
-    //         field: "end",
-    //         operator: "lte",
-    //         value: dayjs(dateRange[1])?.endOf("month"),
-    //     },
-    // ];
-
     const filters: CrudFilter[] = [
         {
             field: "start",
             operator: "eq",
-            value: dayjs()?.subtract(7, "days")?.startOf("day"),
+            value: dayjs(dateRange[0])?.subtract(7, "days")?.startOf("day"),
         },
         {
             field: "end",
             operator: "eq",
-            value: dayjs().startOf("day"),
+            value: dayjs(dateRange[1]).startOf("day"),
         },
     ];
 
@@ -67,7 +54,7 @@ export const Dashboard: React.FC = () => {
                     month: "short",
                     year: "numeric",
                 }).format(new Date(item.date)),
-                value: item?.value / 1000,
+                value: item?.value,
             }));
         }, [d]);
     };
