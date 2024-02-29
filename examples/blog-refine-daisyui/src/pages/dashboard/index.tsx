@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { CrudFilter, useList } from "@refinedev/core";
 import dayjs from "dayjs";
 import Stats from "../../components/dashboard/Stats";
@@ -8,8 +8,11 @@ import { TabView } from "../../components/dashboard/TabView";
 import { RecentSales } from "../../components/dashboard/RecentSales";
 import { IChartDatum, TTab } from "../../interfaces";
 import DateRangePicker from "../../components/dashboard/DateRangePicker";
+import SkeletonLoader from '../../components/dashboard/skeleton/SkeletonLoader';
 
 export const Dashboard: React.FC = () => {
+    const [loading, setLoading] = useState(true);
+
     const [dateRange, setDateRange] = useState<[Date, Date]>([
         dayjs().subtract(7, "days").startOf("day").toDate(),
         dayjs().startOf("day").toDate()
@@ -63,12 +66,22 @@ export const Dashboard: React.FC = () => {
     const memoizedOrdersData = useMemoizedChartData(dailyOrders);
     const memoizedNewCustomersData = useMemoizedChartData(newCustomers);
 
+
+    // Overall loading state or Update loading state when data changes
+    useEffect(() => {
+        if (dailyRevenue !== undefined || dailyOrders !== undefined || newCustomers !== undefined) {
+            setLoading(false);
+        }
+    }, [dailyRevenue, dailyOrders, newCustomers]);
+
     // Rendering logic for the comparison charts based on the selected date range
     const tabs: TTab[] = [
         {
             id: 1,
             label: "Daily Revenue",
-            content: (
+            content: loading ? (
+                <SkeletonLoader />
+            ) : (
                 <ResponsiveAreaChart
                     kpi="Daily revenue"
                     data={memoizedRevenueData}
@@ -112,7 +125,7 @@ export const Dashboard: React.FC = () => {
     return (
         <>
             <DateRangePicker value={dateRange} onChange={handleDateRangeChange} />
-            <Stats />
+            <Stats loading={loading} />
             <TabView tabs={tabs} />
             <RecentSales />
         </>

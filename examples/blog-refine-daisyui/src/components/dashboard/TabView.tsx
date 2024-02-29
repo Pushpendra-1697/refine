@@ -8,7 +8,7 @@ type TTabViewProps = {
 };
 
 export const TabView = ({ tabs }: TTabViewProps) => {
-    const [activeTab, setActiveTab] = useState(0);
+    const [activeTab, setActiveTab] = useState(0);    
     return (
         <div className="mx-auto py-4 bg-slate-50 border rounded-lg drop-shadow-md">
             <div className="tabs">

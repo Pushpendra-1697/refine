@@ -23,7 +23,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ value, onChange }) =>
     };
 
     return (
-        <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
+        <div className="flex gap-2 md:gap-4 flex-col md:flex-row justify-center items-center mb-20">
             <DatePicker
                 selected={startDate}
                 onChange={handleStartDateChange}
