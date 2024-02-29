@@ -1,22 +1,13 @@
-import { useState } from "react";
 import { KpiCard } from "./KpiCard";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import { TabView } from "./TabView";
-import { TTab } from "../../interfaces";
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import SkeletonLoaderStats from "./skeleton/SkeletonLoaderStats";
 
 interface statsProps {
     loading: boolean;
+    handleToggleChartBar: () => void;
+    chartBarOpen: any;
 }
-const Stats = ({ loading }: statsProps) => {
-    const [chartBarOpen, setChartBarOpen] = useState(false);
-
-    const tabs: TTab[] = [];
-
-    const handleToggleChartBar = () => {
-        setChartBarOpen(!chartBarOpen);
-    };
-
+const Stats = ({ loading, handleToggleChartBar, chartBarOpen }: statsProps) => {
     return (
         <div className="w-full mx-auto mb-24 flex flex-col justify-center items-stretch md:flex-row md:justify-between drop-shadow-md">
             <div className="w-full mx-auto md:flex-1 md:mr-2">
@@ -47,13 +38,13 @@ const Stats = ({ loading }: statsProps) => {
                     formatTotal={(value: number | string) => `${value}`}
                 />}
             </div>
-            <div className="flex justify-center items-center">
-                <ChevronDownIcon
+            <div className="flex justify-center items-center ml-2 mt-2">
+                {chartBarOpen ? <ChevronDownIcon
                     className="h-6 w-6 cursor-pointer"
                     onClick={handleToggleChartBar}
-                />
+                /> : <ChevronUpIcon className="h-6 w-6 cursor-pointer"
+                    onClick={handleToggleChartBar} />}
             </div>
-            {chartBarOpen && <TabView tabs={tabs} />}
         </div>
     );
 };

@@ -12,6 +12,8 @@ import SkeletonLoader from '../../components/dashboard/skeleton/SkeletonLoader';
 
 export const Dashboard: React.FC = () => {
     const [loading, setLoading] = useState(true);
+    const [chartBarOpen, setChartBarOpen] = useState(true);
+
 
     const [dateRange, setDateRange] = useState<[Date, Date]>([
         dayjs().subtract(7, "days").startOf("day").toDate(),
@@ -122,11 +124,15 @@ export const Dashboard: React.FC = () => {
         },
     ];
 
+    const handleToggleChartBar = () => {
+        setChartBarOpen(!chartBarOpen);
+    };
+
     return (
         <>
             <DateRangePicker value={dateRange} onChange={handleDateRangeChange} />
-            <Stats loading={loading} />
-            <TabView tabs={tabs} />
+            <Stats chartBarOpen={chartBarOpen} loading={loading} handleToggleChartBar={handleToggleChartBar} />
+            {chartBarOpen && <TabView tabs={tabs} />}
             <RecentSales />
         </>
     );
