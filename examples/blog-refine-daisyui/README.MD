@@ -1,7 +1,10 @@
 <div align="center" style="margin: 30px;">
 
-![Cover Image](./public/cover1.png "Cover Image")
-![Cover Image](./public/cover2.png "Cover Image")
+![Cover Image](./public/c1.png "Cover Image")
+![Cover Image](./public/c2.png "Cover Image")
+![Cover Image](./public/c3.png "Cover Image")
+![Cover Image](./public/c4.png "Cover Image")
+![Cover Image](./public/c5.png "Cover Image")
 
 <a href='https://blog-refine-daisyui-xi.vercel.app' target="_blank">https://blog-refine-daisyui-xi.vercel.app</a>
 

@@ -35,10 +35,6 @@ function App() {
                             },
                         }
                     ]}
-                    options={{
-                        syncWithLocation: true,
-                        warnWhenUnsavedChanges: true,
-                    }}
                 >
                     <Routes>
                         <Route
